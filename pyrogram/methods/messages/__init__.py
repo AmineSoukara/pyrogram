@@ -15,7 +15,7 @@
 #
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
-
+from .iter_messages import IterMessages
 from .copy_media_group import CopyMediaGroup
 from .copy_message import CopyMessage
 from .delete_messages import DeleteMessages
@@ -97,6 +97,7 @@ class Messages(
     SendCachedMedia,
     GetChatHistoryCount,
     ReadChatHistory,
+    IterMessages,
     EditInlineText,
     EditInlineCaption,
     EditInlineMedia,
