@@ -180,6 +180,7 @@ def pyrogram_api():
             get_chat_history
             get_chat_history_count
             read_chat_history
+            iter_messages
             send_poll
             vote_poll
             stop_poll
