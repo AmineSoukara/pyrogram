@@ -17,7 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from datetime import datetime
-from typing import Union, List
+from typing import Union, List, Optional, AsyncGenerator
 
 import pyrogram
 from pyrogram import raw, enums
@@ -514,7 +514,7 @@ class Chat(Object):
     async def ban_member(
         self,
         user_id: Union[int, str],
-        until_date: datetime = datetime.fromtimestamp(0)
+        until_date: datetime = utils.zero_datetime()
     ) -> Union["types.Message", bool]:
         """Bound method *ban_member* of :obj:`~pyrogram.types.Chat`.
 
@@ -602,7 +602,7 @@ class Chat(Object):
         self,
         user_id: Union[int, str],
         permissions: "types.ChatPermissions",
-        until_date: datetime = datetime.fromtimestamp(0),
+        until_date: datetime = utils.zero_datetime(),
     ) -> "types.Chat":
         """Bound method *unban_member* of :obj:`~pyrogram.types.Chat`.
 
@@ -791,12 +791,12 @@ class Chat(Object):
             user_id=user_id
         )
 
-    async def get_members(
+    def get_members(
         self,
         query: str = "",
         limit: int = 0,
         filter: "enums.ChatMembersFilter" = enums.ChatMembersFilter.SEARCH
-    ) -> List["types.ChatMember"]:
+    ) -> Optional[AsyncGenerator["types.ChatMember", None]]:
         """Bound method *get_members* of :obj:`~pyrogram.types.Chat`.
 
         Use as a shortcut for:

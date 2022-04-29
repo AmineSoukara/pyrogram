@@ -23,7 +23,7 @@ import hashlib
 import os
 import struct
 from concurrent.futures.thread import ThreadPoolExecutor
-from datetime import datetime
+from datetime import datetime, timezone
 from getpass import getpass
 from typing import Union, List, Dict, Optional
 
@@ -42,7 +42,8 @@ async def ainput(prompt: str = "", *, hide: bool = False):
 
 def get_input_media_from_file_id(
     file_id: str,
-    expected_file_type: FileType = None
+    expected_file_type: FileType = None,
+    ttl_seconds: int = None
 ) -> Union["raw.types.InputMediaPhoto", "raw.types.InputMediaDocument"]:
     try:
         decoded = FileId.decode(file_id)
@@ -64,7 +65,8 @@ def get_input_media_from_file_id(
                 id=decoded.media_id,
                 access_hash=decoded.access_hash,
                 file_reference=decoded.file_reference
-            )
+            ),
+            ttl_seconds=ttl_seconds
         )
 
     if file_type in DOCUMENT_TYPES:
@@ -73,7 +75,8 @@ def get_input_media_from_file_id(
                 id=decoded.media_id,
                 access_hash=decoded.access_hash,
                 file_reference=decoded.file_reference
-            )
+            ),
+            ttl_seconds=ttl_seconds
         )
 
     raise ValueError(f"Unknown file id: {file_id}")
@@ -343,6 +346,10 @@ async def parse_text_entities(
         "message": text,
         "entities": entities
     }
+
+
+def zero_datetime() -> datetime:
+    return datetime.fromtimestamp(0, timezone.utc)
 
 
 def timestamp_to_datetime(ts: Optional[int]) -> Optional[datetime]:
